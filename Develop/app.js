@@ -13,6 +13,77 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+const questions = [{
+    type: "input",
+    name: "name",
+    message: "Please enter the Employee's Name:"
+},
+{
+    type: "list",
+    name: "role",
+    message: "Please select the Employee's role:",
+    choices: ["Manager", "Engineer", "Intern"]
+},
+{
+    type: "input",
+    name: "id",
+    message: "Please enter the Employee's ID:"
+},
+{
+    type: "input",
+    name: "email",
+    message: "Please enter the Employee's Email:"
+},
+{
+    type: "input",
+    name: "officeNumber",
+    message: "Please enter the Employee's Office Number:",
+    when: (answers) => {
+        if (answers.role === "Manager") {
+            return true;
+        }
+    }
+},
+{
+    type: "input",
+    name: "github",
+    message: "Please enter the Employee's GitHub Account:",
+    when: (answers) => {
+        if (answers.role === "Engineer") {
+            return true;
+        }
+    }
+},
+{
+    type: "input",
+    name: "school",
+    message: "Please enter the Employee's School:",
+    when: (answers) => {
+        if (answers.role === "Intern") {
+            return true;
+        }
+    }
+}
+];
+employeeMore = [];
+
+
+
+// inquirer.prompt(questions).then((answers) => { console.log(answers), console.log("Failed.") });
+async function enterEmployee() {
+    const newEmployee = await inquirer
+        .prompt(questions);
+    console.log(newEmployee);
+    // const employeeSpecial = await inquirer.prompt(employeeMore)
+    // console.log(newEmployee + "," + employeeSpecial)
+}
+enterEmployee();
+
+
+// init = () => {
+//     console.log("Welcome to the Team page Generator! Please enter your first employee.");
+
+// }
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
@@ -33,3 +104,6 @@ const render = require("./lib/htmlRenderer");
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
+
+
+// module.exports = App;
