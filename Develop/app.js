@@ -13,6 +13,8 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+const employeeList = [];
+
 const questions = [{
     type: "input",
     name: "name",
@@ -65,25 +67,37 @@ const questions = [{
     }
 }
 ];
-employeeMore = [];
 
-
-
-// inquirer.prompt(questions).then((answers) => { console.log(answers), console.log("Failed.") });
 async function enterEmployee() {
     const newEmployee = await inquirer
         .prompt(questions);
     console.log(newEmployee);
-    // const employeeSpecial = await inquirer.prompt(employeeMore)
-    // console.log(newEmployee + "," + employeeSpecial)
+    console.log("\n The above entry was added to the team list.");
+    employeeList.push(newEmployee);
 }
-enterEmployee();
+// enterEmployee();
 
+async function readyToRender() {
+    await enterEmployee();
+    const renderConfirm = await inquirer.prompt([{
+        type: "confirm",
+        name: "renderConfirm",
+        message: "Have you finished entering employees and are ready to render your team.html document?"
+    }]);
+    if (renderConfirm === false) {
+        readyToRender();
+    }
+    else if (renderConfirm) {
+        renderHTML();
+    }
+    else {console.error(err);};
+}
 
-// init = () => {
-//     console.log("Welcome to the Team page Generator! Please enter your first employee.");
-
-// }
+init = () => {
+    console.log("Welcome to the Team page Generator! Please enter your first employee.");
+    readyToRender();
+}
+init();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
