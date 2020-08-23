@@ -68,12 +68,29 @@ const questions = [{
 }
 ];
 
+function convertToClass(data) {
+if (data.role === "Manager") {
+    const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+    return manager;
+}
+if (data.role === "Engineer") {
+    const engineer = new Engineer(data.name, data.id, data.email, data.github);
+    return engineer;
+}
+if (data.role === "Intern") {
+    const intern = new Intern(data.name, data.id, data.email, data.school);
+    return intern;
+}
+}
+
 async function enterEmployee() {
     const newEmployee = await inquirer
         .prompt(questions);
-    console.log(newEmployee);
+    let employeeObj = convertToClass(newEmployee);
+    console.log(employeeObj);
     console.log("\n The above entry was added to the team list.");
-    employeeList.push(newEmployee);
+    employeeList.push(employeeObj);
+    console.log(employeeList);
 }
 // enterEmployee();
 
@@ -84,11 +101,21 @@ async function readyToRender() {
         name: "renderConfirm",
         message: "Have you finished entering employees and are ready to render your team.html document?"
     }]);
-    if (renderConfirm === false) {
-        readyToRender();
+    if (renderConfirm.renderConfirm === false) {
+        return readyToRender();
     }
-    else if (renderConfirm) {
-        renderHTML();
+    else if (renderConfirm.renderConfirm === true) {
+        const htmlDoc = render(employeeList);
+        fs.writeFile("./output/team.html", htmlDoc, function(err) {
+
+            if (err) {
+              return console.log(err);
+            }
+          
+            console.log("Success!");
+          
+          });
+          
     }
     else {console.error(err);};
 }
