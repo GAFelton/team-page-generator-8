@@ -127,7 +127,7 @@ async function readyToRender() {
               return console.log(err);
             }
           
-            console.log("Success!");
+            console.log("Success! Please find the file 'team.html' in the output folder. \n Warning: If you run this application again, it will overwrite any file named 'team.html' left in the output folder. Please remove the file you created or copy it to save your work.");
           
           });
           
