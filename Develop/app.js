@@ -34,12 +34,27 @@ const questions = [{
 {
     type: "input",
     name: "email",
-    message: "Please enter the Employee's Email:"
+    message: "Please enter the Employee's Email:",
+    validate: function (value) {
+        var pass = value.match(
+            /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i
+          );
+          if (pass) {
+            return true;
+          }
+    
+          return 'Please enter a valid Email Address';
+        },
 },
 {
     type: "input",
     name: "officeNumber",
     message: "Please enter the Employee's Office Number:",
+    validate: function (value) {
+        var valid = !isNaN(parseFloat(value));
+        return valid || 'Please enter a number';
+    },
+    filter: Number,  
     when: (answers) => {
         if (answers.role === "Manager") {
             return true;
@@ -90,7 +105,6 @@ async function enterEmployee() {
     console.log(employeeObj);
     console.log("\n The above entry was added to the team list.");
     employeeList.push(employeeObj);
-    console.log(employeeList);
 }
 // enterEmployee();
 
@@ -99,14 +113,15 @@ async function readyToRender() {
     const {renderConfirm} = await inquirer.prompt([{
         type: "confirm",
         name: "renderConfirm",
-        message: "Have you finished entering employees and are ready to render your team.html document?"
+        message: "Have you finished entering employees and are ready to render your team.html document?",
+        default: false,
     }]);
     if (renderConfirm === false) {
         return readyToRender();
     }
     else if (renderConfirm === true) {
         const htmlDoc = render(employeeList);
-        fs.writeFile("./output/team.html", htmlDoc, function(err) {
+        fs.writeFile(outputPath, htmlDoc, function(err) {
 
             if (err) {
               return console.log(err);
@@ -121,7 +136,7 @@ async function readyToRender() {
 }
 
 init = () => {
-    console.log("Welcome to the Team page Generator! Please enter your first employee.");
+    console.log("Welcome to the Team page Generator! Enter employees in any order and this program will create a 'team.html' file in the output folder. Please enter your first employee.");
     readyToRender();
 }
 init();
