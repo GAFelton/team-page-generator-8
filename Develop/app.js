@@ -96,15 +96,15 @@ async function enterEmployee() {
 
 async function readyToRender() {
     await enterEmployee();
-    const renderConfirm = await inquirer.prompt([{
+    const {renderConfirm} = await inquirer.prompt([{
         type: "confirm",
         name: "renderConfirm",
         message: "Have you finished entering employees and are ready to render your team.html document?"
     }]);
-    if (renderConfirm.renderConfirm === false) {
+    if (renderConfirm === false) {
         return readyToRender();
     }
-    else if (renderConfirm.renderConfirm === true) {
+    else if (renderConfirm === true) {
         const htmlDoc = render(employeeList);
         fs.writeFile("./output/team.html", htmlDoc, function(err) {
 
