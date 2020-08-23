@@ -51,7 +51,7 @@ const questions = [{
     name: "officeNumber",
     message: "Please enter the Employee's Office Number:",
     validate: function (value) {
-        var valid = !isNaN(parseFloat(value));
+        var valid = !isNaN(parseInt(value));
         return valid || 'Please enter a number';
     },
     filter: Number,  
@@ -110,6 +110,7 @@ async function enterEmployee() {
 
 async function readyToRender() {
     await enterEmployee();
+    console.log(`Number of entries: ${employeeList.length}`)
     const {renderConfirm} = await inquirer.prompt([{
         type: "confirm",
         name: "renderConfirm",
