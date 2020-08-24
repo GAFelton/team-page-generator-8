@@ -39,13 +39,13 @@ const questions = [{
     validate: function (value) {
         var pass = value.match(
             /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i
-          );
-          if (pass) {
+        );
+        if (pass) {
             return true;
-          }
-    
-          return 'Please enter a valid Email Address';
-        },
+        }
+
+        return 'Please enter a valid Email Address';
+    },
 },
 {
     type: "input",
@@ -55,7 +55,7 @@ const questions = [{
         var valid = !isNaN(parseInt(value));
         return valid || 'Please enter a number';
     },
-    filter: Number,  
+    filter: Number,
     when: (answers) => {
         if (answers.role === "Manager") {
             return true;
@@ -86,18 +86,18 @@ const questions = [{
 
 //Function for taking user input and using the Employee JS classes to convert it into the proper format.
 function convertToClass(data) {
-if (data.role === "Manager") {
-    const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
-    return manager;
-}
-if (data.role === "Engineer") {
-    const engineer = new Engineer(data.name, data.id, data.email, data.github);
-    return engineer;
-}
-if (data.role === "Intern") {
-    const intern = new Intern(data.name, data.id, data.email, data.school);
-    return intern;
-}
+    if (data.role === "Manager") {
+        const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+        return manager;
+    }
+    if (data.role === "Engineer") {
+        const engineer = new Engineer(data.name, data.id, data.email, data.github);
+        return engineer;
+    }
+    if (data.role === "Intern") {
+        const intern = new Intern(data.name, data.id, data.email, data.school);
+        return intern;
+    }
 }
 
 //This function asks for user inputs, converts them to the correct Class object, then adds them to the employeeList array.
@@ -114,7 +114,7 @@ async function enterEmployee() {
 async function readyToRender() {
     await enterEmployee();
     console.log(`Number of entries: ${employeeList.length}`)
-    const {renderConfirm} = await inquirer.prompt([{
+    const { renderConfirm } = await inquirer.prompt([{
         type: "confirm",
         name: "renderConfirm",
         message: "Have you finished entering employees and are ready to render your team.html document?",
@@ -125,22 +125,25 @@ async function readyToRender() {
     }
     else if (renderConfirm === true) {
         const htmlDoc = render(employeeList);
-        fs.writeFile(outputPath, htmlDoc, function(err) {
+        fs.writeFile(outputPath, htmlDoc, function (err) {
 
             if (err) {
-              return console.log(err);
+                return console.log(err);
             }
-          
+
             console.log("Success! Please find the file 'team.html' in the output folder. \n Warning: If you run this application again, it will overwrite any file named 'team.html' left in the output folder. Please remove the file you created or copy it to save your work.");
-          
-          });
-          
+
+        });
+
     }
-    else {console.error(err);};
+    else { console.error(err); };
 }
 
 //The init function kicks off the application and calls the question logic function readyToRender().
 init = () => {
+    fs.mkdir('./output', { recursive: true }, (err) => {
+        if (err) throw err;
+    });
     console.log("Welcome to the Team page Generator! Enter employees in any order and this program will create a 'team.html' file in the output folder. Please enter your first employee.");
     readyToRender();
 }
