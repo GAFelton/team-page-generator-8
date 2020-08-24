@@ -8,7 +8,7 @@
 
 [Link to GitHub Repo](https://github.com/GAFelton/team-page-generator-8)
 
-![Team-html-example-screenshot](.\Assets\teamhtml-example-screenshot)
+![Team-html-example-screenshot](./Assets/teamhtml-example-screenshot)
 
   
 
@@ -41,7 +41,7 @@
 
   The program will ask you simple questions to generate each employee card based on three role types: Manager, Engineer, and Intern.
 
-![demo-gif](.\Assets\demo.gif)
+![demo-gif](./Assets/demo.gif)
 
 [Demo Video Link](https://drive.google.com/file/d/15qsqtER9H-os5Jq-vDdXTErYnyNMHLIp/view)
 
